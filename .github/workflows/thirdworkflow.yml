@@ -1,0 +1,19 @@
+name: Third Workflow
+on:
+    push:
+    workflow_dispatch:
+jobs:
+    greet-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            - name: Run a greeting script
+              run: echo "Hello from the third workflow!"
+    farewell-job:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            - name: Run a farewell script
+              run: echo "Goodbye from the third workflow!"
