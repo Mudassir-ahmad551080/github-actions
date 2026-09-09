@@ -1,0 +1,11 @@
+name: Frist Workflow
+on: workflow_dispatch
+jobs:
+  first-job:
+   runs-on: ubuntu-latest
+   steps:
+      - name: Hello github actions
+        run: echo "Hello this is the first workflow"
+      - name: Buy github actions
+        run: echo "Hello github action is closed"
+     
