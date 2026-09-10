@@ -39,6 +39,7 @@ jobs:
           done
 
   lint-js:
+    needs: [validate-js, validate-html]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
