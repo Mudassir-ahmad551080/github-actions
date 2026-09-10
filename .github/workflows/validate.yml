@@ -1,0 +1,60 @@
+name: Validate HTML & JS
+
+on:
+  push:
+
+jobs:
+  validate-html:
+    name: Validate HTML files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validate HTML with html-validate
+        run: |
+          npm install --no-save html-validate
+          npx html-validate "**/*.html"
+
+  validate-js:
+    name: Validate JS files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check JS syntax with node --check
+        run: |
+          for file in $(find . -name "*.js" -not -path "./node_modules/*"); do
+            echo "Checking syntax: $file"
+            node --check "$file"
+          done
+
+      - name: Lint JS code with ESLint
+        run: |
+          npm install --no-save eslint @eslint/js globals
+          cat > eslint.config.js << 'EOF'
+          import js from "@eslint/js";
+          import globals from "globals";
+          export default [
+            js.configs.recommended,
+            {
+              languageOptions: {
+                ecmaVersion: "latest",
+                sourceType: "module",
+                globals: { ...globals.browser, ...globals.node },
+              },
+            },
+          ];
+          EOF
+          npx eslint "**/*.js"
